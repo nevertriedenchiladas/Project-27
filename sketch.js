@@ -10,6 +10,8 @@ var playerArrows = [];
 var board1, board2;
 var numberOfArrows = 10;
 
+var score = 0;
+
 function preload() {
   backgroundImg = loadImage("./assets/background.png");
 }
@@ -59,10 +61,23 @@ function draw() {
         playerArrows[i].body
       );
 
+      /*if (board1Collision || board2Collision) {
+        score += 5;
+      }*/
+
+      /*if (board1Collision.collided && board2Collision.collided) {
+        score += 5;
+      }*/
+
       if (board1Collision.collided || board2Collision.collided) {
-        console.log("Collided");
+        score += 5;
       }
 
+      /*if (board1Collision.collided || board2Collision.collided) {
+        score = 5;
+      }*/
+
+      
       var posX = playerArrows[i].body.position.x;
       var posY = playerArrows[i].body.position.y;
 
@@ -82,11 +97,34 @@ function draw() {
   textSize(40);
   text("EPIC ARCHERY", width / 2, 100);
 
+  // Score
+  fill("#FFFF");
+  textAlign("center");
+  textSize(30);
+  text("Score " + score, width - 200, 100);
+
   // Arrow Count
   fill("#FFFF");
   textAlign("center");
   textSize(30);
   text("Remaining Arrows : " + numberOfArrows, 200, 100);
+
+  /*if (numberOfArrows == 5) {
+    gameOver();
+  }*/
+
+  if (numberOfArrows == 0) {
+    gameOver();
+  }
+
+  /*if (numberOfArrows = 0) {
+    gameOver();
+  }*/
+
+  /*if (numberOfArrows == 0) {
+    gameOver;
+  }*/
+
 }
 
 function keyPressed() {
@@ -99,7 +137,6 @@ function keyPressed() {
       var arrow = new PlayerArrow(posX, posY, 100, 10, angle);
 
       arrow.trajectory = [];
-      
       Matter.Body.setAngle(arrow.body, angle);
       playerArrows.push(arrow);
       numberOfArrows -= 1;
@@ -115,3 +152,23 @@ function keyReleased() {
     }
   }
 }
+
+function gameOver() {
+  swal(
+    {
+      title: `Game Over!!!`,
+      text: "Thanks for playing!!",
+      imageUrl:
+        "https://raw.githubusercontent.com/vishalgaddam873/PiratesInvision/main/assets/board.png",
+      imageSize: "150x150",
+      confirmButtonText: "Play Again"
+    },
+    function(isConfirm) {
+      if (isConfirm) {
+        location.reload();
+      }
+    }
+  );
+}
+
+
